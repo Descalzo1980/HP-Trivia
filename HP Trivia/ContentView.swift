@@ -13,6 +13,7 @@ struct ContentView: View {
     @State private var scalePlayButton = false
     @State private var moveBackgroundImage = false
     @State private var animationViewsIn = false
+    @State private var showInstructions = false
     
     
     var body: some View {
@@ -77,7 +78,7 @@ struct ContentView: View {
                         VStack {
                             if animationViewsIn {
                                 Button {
-                                    
+                                    showInstructions.toggle()
                                 } label: {
                                     Image(systemName: "info.circle.fill")
                                         .font(.largeTitle)
@@ -87,6 +88,9 @@ struct ContentView: View {
                                 .transition(.offset(x: -geo.size.width / 4))
                             }
                         }.animation(.easeOut(duration: 1).delay(1), value: animationViewsIn)
+                            .sheet(isPresented: $showInstructions) {
+                                Instructions()
+                            }
                         Spacer()
                         VStack {
                             if animationViewsIn {
