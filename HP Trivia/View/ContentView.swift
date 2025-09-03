@@ -15,6 +15,7 @@ struct ContentView: View {
     @State private var animationViewsIn = false
     @State private var showInstructions = false
     @State private var showSettings = false
+    @State private var playGame = false
     
     
     var body: some View {
@@ -40,11 +41,11 @@ struct ContentView: View {
                                     .imageScale(.large)
                                 
                                 Text("HP")
-                                    .font(.custom(Contstants.hpFont, size: 70))
+                                    .font(.custom(Constants.hpFont, size: 70))
                                     .padding(.bottom, -50)
                                 
                                 Text("Trivia")
-                                    .font(.custom(Contstants.hpFont, size: 60))
+                                    .font(.custom(Constants.hpFont, size: 60))
                             }
                             .padding(.top, 70)
                             .transition(.move(edge: .top))
@@ -96,7 +97,7 @@ struct ContentView: View {
                         VStack {
                             if animationViewsIn {
                                 Button {
-                                    
+                                    playGame.toggle()
                                 } label: {
                                     Text("Play")
                                         .font(.largeTitle)
@@ -114,6 +115,9 @@ struct ContentView: View {
                                     }
                                 }
                                 .transition(.offset(y: geo.size.height / 3))
+                                .fullScreenCover(isPresented: $playGame) {
+                                    Gameplay()
+                                }
                             }
                         }
                         .animation(.easeOut(duration: 1).delay(1), value: animationViewsIn)

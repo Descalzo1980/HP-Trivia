@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum Contstants {
+enum Constants {
     static let hpFont = "PartyLetPlain"
 }
 
