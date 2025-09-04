@@ -1,0 +1,138 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "DF59AAEB",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "100",
+      "familyShareable" : false,
+      "internalID" : "D45C4D17",
+      "localizations" : [
+        {
+          "description" : "Send a hundred bucks, brother",
+          "displayName" : "Hey mister, give me one dollar please.",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "hp4",
+      "promotionalImageID" : "D42EA93B",
+      "referenceName" : "HP4",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "100",
+      "familyShareable" : false,
+      "internalID" : "A84A3397",
+      "localizations" : [
+        {
+          "description" : "Send a hundred bucks, brother",
+          "displayName" : "Hey mister, give me one dollar please.",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "hp5",
+      "referenceName" : "HP5",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "100",
+      "familyShareable" : false,
+      "internalID" : "D8EA98FF",
+      "localizations" : [
+        {
+          "description" : "Вышли сотку баксов, брат",
+          "displayName" : "Hey mister, give me one dollar please.",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "hp6",
+      "referenceName" : "HP6",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "100",
+      "familyShareable" : false,
+      "internalID" : "AF9A8583",
+      "localizations" : [
+        {
+          "description" : "Вышли сотку баксов, брат",
+          "displayName" : "Hey mister, give me one dollar please",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "hp7",
+      "referenceName" : "HP7",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}
