@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import AVKit
 
 struct Gameplay: View {
     @Environment(\.dismiss) private var dismiss
     @Namespace private var namespace
+    @State private var musicPlayer: AVAudioPlayer!
+    @State private var soundEffectPlayer: AVAudioPlayer!
     @State private var animationViewsIn = false
     @State private var tappedCorrectAnswer = false
     @State private var hintWiggle = false
@@ -55,7 +58,7 @@ struct Gameplay: View {
                                 .opacity(tappedCorrectAnswer ? 0.1 : 1)
                         }
                     }
-                    .animation(.easeInOut(duration: 2),value: animationViewsIn)
+                    .animation(.easeInOut(duration: animationViewsIn ? 2 : 0),value: animationViewsIn)
                     
                     Spacer()
                     // MARK: Hints
@@ -84,6 +87,7 @@ struct Gameplay: View {
                                             .easeOut(duration: 1)) {
                                                 revealHint = true
                                             }
+                                        playFlipMusic()
                                     }
                                     .rotation3DEffect(.degrees(revealHint ? 1440 : 0), axis: (x: 1, y: 0, z: 0))
                                     .scaleEffect(revealHint ? 5 : 1)
@@ -100,7 +104,7 @@ struct Gameplay: View {
                                     .opacity(tappedCorrectAnswer ? 0.1 : 1)
                                     .disabled(tappedCorrectAnswer)
                             }
-                        }.animation(.easeInOut(duration: 1.5).delay(2),value: animationViewsIn)
+                        }.animation(.easeInOut(duration: animationViewsIn ? 1.5 : 0).delay(animationViewsIn ? 2 : 0),value: animationViewsIn)
                         
                         Spacer()
                         VStack {
@@ -129,6 +133,7 @@ struct Gameplay: View {
                                             .easeOut(duration: 1)) {
                                                 revealBook = true
                                             }
+                                        playFlipMusic()
                                     }
                                     .rotation3DEffect(.degrees(revealBook ? 1440 : 0), axis: (x: 1, y: 0, z: 0))
                                     .scaleEffect(revealBook ? 5 : 1)
@@ -145,7 +150,7 @@ struct Gameplay: View {
                                     .opacity(tappedCorrectAnswer ? 0.1 : 1)
                                     .disabled(tappedCorrectAnswer)
                             }
-                        }.animation(.easeInOut(duration: 1.5).delay(2),value: animationViewsIn)
+                        }.animation(.easeInOut(duration: animationViewsIn ? 1.5 : 0).delay(animationViewsIn ? 2 : 0),value: animationViewsIn)
                     }
                     .padding(.bottom)
                     
@@ -169,10 +174,11 @@ struct Gameplay: View {
                                                     withAnimation(.easeOut(duration: 1)) {
                                                         tappedCorrectAnswer = true
                                                     }
+                                                    playCorrectMusic()
                                                 }
                                         }
                                     }
-                                }.animation(.easeOut(duration: 1.6).delay(2),value: animationViewsIn)
+                                }.animation(.easeOut(duration: animationViewsIn ? 1.5 : 0).delay(animationViewsIn ? 2 : 0),value: animationViewsIn)
                             } else {
                                 VStack {
                                     if animationViewsIn {
@@ -188,13 +194,15 @@ struct Gameplay: View {
                                                 withAnimation(.easeOut(duration: 1)) {
                                                     wrongAnswersTapped.append(i)
                                                 }
+                                                playWrongMusic()
+                                                giveWrongFeedback()
                                             }
                                             .scaleEffect(wrongAnswersTapped.contains(i) ? 0.8 : 1)
                                             .disabled(tappedCorrectAnswer || wrongAnswersTapped.contains(i))
                                             .opacity(tappedCorrectAnswer ? 0.1 : 1)
                                     }
                                 }
-                                .animation(.easeOut(duration: 1.6).delay(2),value: animationViewsIn)
+                                .animation(.easeOut(duration: animationViewsIn ? 1.5 : 0).delay(animationViewsIn ? 2 : 0),value: animationViewsIn)
                             }
                         }
                     }
@@ -233,7 +241,7 @@ struct Gameplay: View {
                                 .font(.custom(Constants.hpFont, size: 100))
                                 .transition(.scale.combined(with: .offset(y: -geo.size.height / 2)))
                         }
-                    }.animation(.easeInOut(duration: 1).delay(1),value: tappedCorrectAnswer)
+                    }.animation(.easeInOut(duration: tappedCorrectAnswer ? 1 : 0).delay(tappedCorrectAnswer ? 1 : 0),value: tappedCorrectAnswer)
                     
                     Spacer()
                     
@@ -280,7 +288,7 @@ struct Gameplay: View {
                                 }
                             }
                         }
-                    }.animation(.easeInOut(duration: 2.7).delay(2.7),value: tappedCorrectAnswer)
+                    }.animation(.easeInOut(duration: tappedCorrectAnswer ? 2.7 : 0).delay(tappedCorrectAnswer ? 2.7 : 0),value: tappedCorrectAnswer)
                     
                     Group {
                         Spacer()
@@ -294,8 +302,41 @@ struct Gameplay: View {
         .ignoresSafeArea()
         .onAppear {
             animationViewsIn = true
-            //tappedCorrectAnswer = true
+            playMusic()
         }
+    }
+    
+    private func playMusic() {
+        let songs = ["let-the-mystery-unfold", "spellcraft", "hiding-place-in-the-forest","deep-in-the-dell"]
+        let i = Int.random(in: 0...3)
+        let sound = Bundle.main.path(forResource: songs[i], ofType: "mp3")
+        musicPlayer = try! AVAudioPlayer(contentsOf: URL(filePath: sound!))
+        musicPlayer.volume = 0.1
+        musicPlayer.numberOfLoops = -1
+        musicPlayer.play()
+    }
+    
+    private func playFlipMusic() {
+        let sound = Bundle.main.path(forResource: "page-flip", ofType: "mp3")
+        soundEffectPlayer = try! AVAudioPlayer(contentsOf: URL(filePath: sound!))
+        soundEffectPlayer.play()
+    }
+    
+    private func playWrongMusic() {
+        let sound = Bundle.main.path(forResource: "negative-beeps", ofType: "mp3")
+        soundEffectPlayer = try! AVAudioPlayer(contentsOf: URL(filePath: sound!))
+        soundEffectPlayer.play()
+    }
+    
+    private func playCorrectMusic() {
+        let sound = Bundle.main.path(forResource: "magic-wand", ofType: "mp3")
+        soundEffectPlayer = try! AVAudioPlayer(contentsOf: URL(filePath: sound!))
+        soundEffectPlayer.play()
+    }
+    
+    private func giveWrongFeedback() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.error)
     }
 }
 
