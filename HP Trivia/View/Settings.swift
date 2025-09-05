@@ -22,8 +22,11 @@ struct Settings: View {
                     .padding(.top)
                 ScrollView {
                     LazyVGrid(columns: [GridItem(),GridItem()]) {
-                        ForEach(0..<7) {i in
-                            if store.books[i] == .active {
+                        ForEach(0..<7) { i in
+                            let id = "hp\(i+1)"
+                            let status = store.books[i]
+                            let purchased = store.purchasedIDs.contains(id)
+                            if store.books[i] == .active || (store.books[i] == .locked && store.purchasedIDs.contains("hp\(i+1)")){
                                 ZStack(alignment: .bottomTrailing) {
                                     Image("hp\(i+1)")
                                         .resizable()
@@ -36,8 +39,14 @@ struct Settings: View {
                                         .foregroundStyle(.green)
                                         .shadow(radius: 1)
                                         .padding(3)
-                                }.onTapGesture {
+                                }
+                                .onTapGesture {
                                     store.books[i] = .inactive
+                                }.task {
+                                    store.books[i] = .active
+                                }
+                                .onAppear {
+                                    print("index=\(i), id=\(id), status=\(status), purchased=\(purchased)")
                                 }
                             }
                             else if store.books[i] == .inactive {
@@ -71,6 +80,16 @@ struct Settings: View {
                                         .font(.largeTitle)
                                         .imageScale(.large)
                                         .shadow(color:.white.opacity(0.75), radius: 3)
+                                }
+                                .onTapGesture {
+                                    let id = "hp\(i+1)"
+                                    if let product = store.products.first(where: { $0.id == id }) {
+                                        Task {
+                                            await store.purchase(product)
+                                        }
+                                    } else {
+                                        print("⚠️ Product \(id) not found")
+                                    }
                                 }
                             }
                         }
