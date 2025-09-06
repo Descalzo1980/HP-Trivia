@@ -14,6 +14,11 @@ class Game: ObservableObject {
     
     var filteredQuestion: [Question] = []
     var currentQuestion = Constants.previewQuestion
+    var answers: [String] = []
+    
+    var correctAnswer: String {
+        currentQuestion.answers.first(where: {$0.value == true })!.key
+    }
     
     init() {
         decodeQuestion()
@@ -30,11 +35,23 @@ class Game: ObservableObject {
         if answeredQuestion.count == filteredQuestion.count {
             answeredQuestion = []
         }
-            var potentialQuestion = filteredQuestion.randomElement()!
-            while answeredQuestion.contains(potentialQuestion.id) {
-                potentialQuestion = filteredQuestion.randomElement()!
-            }
-            currentQuestion = potentialQuestion
+        var potentialQuestion = filteredQuestion.randomElement()!
+        while answeredQuestion.contains(potentialQuestion.id) {
+            potentialQuestion = filteredQuestion.randomElement()!
+        }
+        currentQuestion = potentialQuestion
+        
+        answers = []
+        
+        for answer in currentQuestion.answers.keys {
+            answers.append(answer)
+        }
+        
+        answers.shuffle()
+    }
+    
+    func correct() {
+        answeredQuestion.append(currentQuestion.id)
     }
     
     private func decodeQuestion() {
