@@ -10,6 +10,7 @@ import AVKit
 
 struct ContentView: View {
     @EnvironmentObject private var store: Store
+    @EnvironmentObject private var game: Game
     @State private var audioPlayer: AVAudioPlayer!
     @State private var scalePlayButton = false
     @State private var moveBackgroundImage = false
@@ -118,6 +119,7 @@ struct ContentView: View {
                                 .transition(.offset(y: geo.size.height / 3))
                                 .fullScreenCover(isPresented: $playGame) {
                                     Gameplay()
+                                        .environmentObject(game)
                                 }
                             }
                         }
@@ -137,6 +139,7 @@ struct ContentView: View {
                                 .transition(.offset(x: geo.size.width / 4))
                                 .sheet(isPresented: $showSettings) {
                                     Settings()
+                                        .environmentObject(store)
                                 }
                             }
                         }
@@ -173,6 +176,7 @@ struct ContentView_Previews: PreviewProvider {
         VStack {
             ContentView()
                 .environmentObject(Store())
+                .environmentObject(Game())
         }
     }
 }
