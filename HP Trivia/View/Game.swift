@@ -9,6 +9,10 @@ import Foundation
 
 @MainActor
 class Game: ObservableObject {
+    @Published var gameScore = 0
+    @Published var questionScore = 5
+    @Published var recentScore = [0, 0, 0]
+    
     private var allQuestion: [Question] = []
     private var answeredQuestion: [Int] = []
     
@@ -22,6 +26,12 @@ class Game: ObservableObject {
     
     init() {
         decodeQuestion()
+    }
+    
+    func startGame() {
+        gameScore = 0
+        questionScore = 5
+        answeredQuestion = []
     }
     
     func filterQuestion(to books: [Int]) {
@@ -48,10 +58,19 @@ class Game: ObservableObject {
         }
         
         answers.shuffle()
+        questionScore = 5
     }
     
     func correct() {
         answeredQuestion.append(currentQuestion.id)
+        
+        gameScore += questionScore
+    }
+    
+    func endGame() {
+        recentScore[2] = recentScore[1]
+        recentScore[1] = recentScore[0]
+        recentScore[0] = gameScore
     }
     
     private func decodeQuestion() {
