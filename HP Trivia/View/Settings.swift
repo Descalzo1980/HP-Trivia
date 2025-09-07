@@ -105,6 +105,7 @@ struct Settings: View {
                 }
                 .doneBotton()
             }
+            .foregroundStyle(.black)
         }
     }
 }
